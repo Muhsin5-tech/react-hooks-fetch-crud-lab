@@ -22,17 +22,29 @@ h5,
 h6 {
   margin-bottom: 0.5em;
   line-height: 1.5;
+  text-align: center;
 }
 
 button {
   font-family: "Press Start 2p", cursive;
-  font-size: 0.8rem;
-  border: 3px solid black;
-  padding: 0.5rem 1rem;
-  background-color: rgb(245, 158, 158);
-  box-shadow: inset -3px -3px 0 0 rgb(252, 124, 124);
-  transition: all 0.1s ease-in;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 20px;
+  background-color:   #FFDB58;
+  color: black;
+  border: none;
+  border-radius: 5px;
 }
+
+button:hover {
+    background-color: #45a049;
+}
+
+.btn-delete{
+  background-color: red;
+}
+
 
 nav button {
   margin: 0.5rem 1rem;
@@ -87,4 +99,52 @@ li {
 li:not(:last-child) {
   padding-bottom: 1rem;
   border-bottom: 3px solid black;
+}
+
+.buttons-container{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+select {
+  width: 250px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #f1f1f1;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+select:hover {
+  border-color: #4CAF50;
+  background-color: #e8f5e9; 
+}
+
+select option {
+  padding: 10px;
+  background-color: white;
+  color: #333;
+}
+
+select option.correct {
+  background-color: #4CAF50;
+  color: white;
+}
+
+span {
+  color: #4CAF50;
+  font-weight: bold;
 }
