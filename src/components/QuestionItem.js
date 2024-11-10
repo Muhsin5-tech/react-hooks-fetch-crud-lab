@@ -1,30 +1,42 @@
-import React from 'react';
+import React from "react";
 
-function QuestionItem({ question, onDeleteQuestion, onUpdateQuestion }) {
-    const { id, prompt, answers, correctIndex } = question;
+const QuestionItem = ({ question, onDelete, onUpdate }) => {
+  const { id, prompt, answers, correctIndex } = question;
 
-    const handleDeleteClick = () => {
-        onDeleteQuestion(id);
-    };
+  const handleDelete = () => {
+    onDelete(id);
+  };
 
-    const handleCorrectAnswerChange = (event) => {
-        onUpdateQuestion(id, parseInt(event.target.value));
-    };
+  const handleCorrectAnswerChange = (e) => {
+    const newCorrectIndex = parseInt(e.target.value, 10);
+    onUpdate(id, newCorrectIndex);
+  };
 
-    return (
-        <li>
-            <h3>{prompt}</h3>
-            <label>
-                Correct Answer:
-                <select value={correctIndex} onChange={handleCorrectAnswerChange}>
-                    {answers.map((answer, index) => (
-                        <option key={index} value={index}>{answer}</option>
-                    ))}
-                </select>
-            </label>
-            <button onClick={handleDeleteClick}>Delete</button>
-        </li>
-    );
-}
+  return (
+    <li>
+      <h3>{prompt}</h3>
+      <ul>
+        {answers.map((answer, index) => (
+          <li key={index}>
+            {answer}
+            {index === correctIndex && " (Correct)"}
+          </li>
+        ))}
+      </ul>
+      <select
+        value={correctIndex}
+        onChange={handleCorrectAnswerChange}
+        aria-label="Correct Answer"
+      >
+        {answers.map((_, index) => (
+          <option key={index} value={index}>
+            Option {index + 1}
+          </option>
+        ))}
+      </select>
+      <button onClick={handleDelete}>Delete Question</button>
+    </li>
+  );
+};
 
 export default QuestionItem;

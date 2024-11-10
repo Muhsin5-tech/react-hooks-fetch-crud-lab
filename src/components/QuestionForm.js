@@ -1,78 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-function QuestionForm({ onAddQuestion, onUpdateQuestion, question }) {
-    const [prompt, setPrompt] = useState('');
-    const [answers, setAnswers] = useState(['', '', '', '']);
-    const [correctIndex, setCorrectIndex] = useState(0);
+const QuestionForm = ({ onAdd }) => {
+  const [prompt, setPrompt] = useState('');
+  const [answers, setAnswers] = useState(['', '', '', '']);
+  const [correctIndex, setCorrectIndex] = useState(0);
 
-    useEffect(() => {
-        if (question) {
-            setPrompt(question.prompt);
-            setAnswers(question.answers);
-            setCorrectIndex(question.correctIndex);
-        }
-    }, [question]);
+  const handleChange = (e, index) => {
+    const newAnswers = [...answers];
+    newAnswers[index] = e.target.value;
+    setAnswers(newAnswers);
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const newQuestion = { prompt, answers, correctIndex: parseInt(correctIndex) };
-        
-        if (question) {
-            onUpdateQuestion({ ...newQuestion, id: question.id });
-        } else {
-            onAddQuestion(newQuestion);
-        }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newQuestion = { prompt, answers, correctIndex };
+    onAdd(newQuestion);
+    setPrompt('');
+    setAnswers(['', '', '', '']);
+    setCorrectIndex(0);
+  };
 
-        setPrompt('');
-        setAnswers(['', '', '', '']);
-        setCorrectIndex(0);
-    };
-
-    const handleAnswerChange = (index, value) => {
-        const newAnswers = [...answers];
-        newAnswers[index] = value;
-        setAnswers(newAnswers);
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <h2>{question ? "Edit Question" : "Add New Question"}</h2>
-            <label>
-                Question Prompt:
-                <input 
-                    type="text" 
-                    value={prompt} 
-                    onChange={(e) => setPrompt(e.target.value)} 
-                />
-            </label>
-            <br />
-            <label>
-                Answers:
-                {answers.map((answer, index) => (
-                    <input 
-                        key={index} 
-                        type="text" 
-                        value={answer} 
-                        onChange={(e) => handleAnswerChange(index, e.target.value)} 
-                    />
-                ))}
-            </label>
-            <br />
-            <label>
-                Correct Answer:
-                <select 
-                    value={correctIndex} 
-                    onChange={(e) => setCorrectIndex(e.target.value)}
-                >
-                    {answers.map((answer, index) => (
-                        <option key={index} value={index}>{answer || `Answer ${index + 1}`}</option>
-                    ))}
-                </select>
-            </label>
-            <br />
-            <button type="submit">{question ? "Update Question" : "Add Question"}</button>
-        </form>
-    );
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Prompt:
+        <input
+          type="text"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+        />
+      </label>
+      {answers.map((answer, index) => (
+        <label key={index}>
+          Answer {index + 1}:
+          <input
+            type="text"
+            value={answer}
+            onChange={(e) => handleChange(e, index)}
+          />
+        </label>
+      ))}
+      <label>
+        Correct Answer:
+        <select
+          value={correctIndex}
+          onChange={(e) => setCorrectIndex(parseInt(e.target.value, 10))}
+        >
+          {answers.map((_, index) => (
+            <option key={index} value={index}>
+              Option {index + 1}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button type="submit">Add Question</button>
+    </form>
+  );
+};
 
 export default QuestionForm;
